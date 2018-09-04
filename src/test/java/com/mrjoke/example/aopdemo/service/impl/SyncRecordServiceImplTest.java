@@ -52,9 +52,9 @@ public class SyncRecordServiceImplTest {
     @Test
     public void reflect(){
         //直接通过syncRecordService.getClass()拿到的类是CGLIB的代理类，取不到注解
-//        Class<? extends SyncRecordService> clazz = syncRecordService.getClass();
-        Class<? extends SyncRecordService> clazz = SyncRecordServiceImpl.class;
-        Method[] declaredMethods = clazz.getDeclaredMethods();
+        Class<? extends SyncRecordService> clazz = syncRecordService.getClass();
+//        Class<? extends SyncRecordService> clazz = SyncRecordServiceImpl.class;
+        Method[] declaredMethods = clazz.getSuperclass().getDeclaredMethods();
         for (Method method : declaredMethods) {
             SyncLog syncLog = method.getAnnotation(SyncLog.class);
             if (syncLog != null){
