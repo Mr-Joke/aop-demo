@@ -1,5 +1,6 @@
 package com.mrjoke.example.aopdemo.service.impl;
 
+import com.mrjoke.example.aopdemo.annotations.SyncLog;
 import com.mrjoke.example.aopdemo.pojo.model.SyncRecord;
 import com.mrjoke.example.aopdemo.service.SyncRecordService;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.Method;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -40,5 +42,23 @@ public class SyncRecordServiceImplTest {
         syncRecord.setCreator("mq");
         syncRecord.setModifier("mq");
         syncRecordService.sync(syncRecord);
+    }
+
+    /**
+     * 测试一下反射取注解
+     */
+    @Test
+    public void reflect(){
+        //直接通过syncRecordService.getClass()拿到的类是CGLIB的代理类，取不到注解
+//        Class<? extends SyncRecordService> clazz = syncRecordService.getClass();
+        Class<? extends SyncRecordService> clazz = SyncRecordServiceImpl.class;
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+        for (Method method : declaredMethods) {
+            SyncLog syncLog = method.getAnnotation(SyncLog.class);
+            if (syncLog != null){
+                System.out.println(syncLog.log());
+                System.out.println("method : " + method.getName());
+            }
+        }
     }
 }
