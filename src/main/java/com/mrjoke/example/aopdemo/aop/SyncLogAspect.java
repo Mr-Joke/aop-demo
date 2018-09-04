@@ -1,5 +1,6 @@
 package com.mrjoke.example.aopdemo.aop;
 
+import com.mrjoke.example.aopdemo.annotations.SyncLog;
 import com.mrjoke.example.aopdemo.mq.producer.MessageSender;
 import com.mrjoke.example.aopdemo.pojo.model.SyncRecord;
 import org.aspectj.lang.JoinPoint;
@@ -22,10 +23,10 @@ import org.springframework.stereotype.Component;
 public class SyncLogAspect {
     @Autowired
     private MessageSender messageSender;
-   /* @Before(value = "execution(* com.mrjoke.example.aopdemo.service.impl..*.*(..)) && @annotation(com.mrjoke.example.aopdemo.annotations.SyncLog)")
-    public void before(){
-        System.out.println("方法执行前切入……" + Thread.currentThread().getName());
-    }*/
+    @Before(value = "execution(* com.mrjoke.example.aopdemo.service.impl..*.*(..)) && @annotation(syncLog)")
+    public void before(SyncLog syncLog){
+        System.out.println("方法执行前切入……是否同步：" + syncLog.log());
+    }
 
     @After(value = "execution(* com.mrjoke.example.aopdemo.service.impl..*.*(..)) && @annotation(com.mrjoke.example.aopdemo.annotations.SyncLog)")
     public void after(JoinPoint joinPoint){
@@ -38,8 +39,8 @@ public class SyncLogAspect {
             }
         }
     }
-/*
-    @AfterReturning(value = "execution(* com.mrjoke.example.aopdemo.service.impl..*.*(..)) && @annotation(com.mrjoke.example.aopdemo.annotations.SyncLog)")
+
+  /*  @AfterReturning(value = "execution(* com.mrjoke.example.aopdemo.service.impl..*.*(..)) && @annotation(com.mrjoke.example.aopdemo.annotations.SyncLog)")
     public void afterReturning(){
         System.out.println("方法执行返回后切入……" + Thread.currentThread().getName());
     }

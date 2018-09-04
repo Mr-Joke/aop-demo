@@ -22,7 +22,7 @@ public class SyncRecordServiceImpl implements SyncRecordService {
     @Autowired
     private SyncRecordDao syncRecordDao;
 
-    @SyncLog(log = false)
+//    @SyncLog
     @Override
     public void sync(SyncRecord syncRecord) {
         System.out.println("正在同步中……");

@@ -30,6 +30,8 @@ import static org.junit.Assert.*;
 public class SyncRecordServiceImplTest {
     @Autowired
     private SyncRecordService syncRecordService;
+    @Autowired
+    private TestServiceImpl testServiceImpl;
 
     @Test
     public void sync() {
@@ -60,5 +62,10 @@ public class SyncRecordServiceImplTest {
                 System.out.println("method : " + method.getName());
             }
         }
+    }
+
+    @Test
+    public void test(){
+        testServiceImpl.test();
     }
 }
